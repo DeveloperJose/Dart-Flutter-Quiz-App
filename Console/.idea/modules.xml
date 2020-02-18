@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Console-Version.iml" filepath="$PROJECT_DIR$/Console-Version.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DQuiz_Console.iml" filepath="$PROJECT_DIR$/DQuiz_Console.iml" />
     </modules>
   </component>
 </project>
