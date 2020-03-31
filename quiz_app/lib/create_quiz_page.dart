@@ -1,8 +1,8 @@
 // Author: Jose G. Perez
 import 'package:flutter/material.dart';
 
-import 'question.dart';
-import 'quiz.dart';
+import 'model/question.dart';
+import 'model/quiz.dart';
 
 class CreateQuizPage extends StatefulWidget {
   CreateQuizPage({Key key}) : super(key: key);
@@ -19,7 +19,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     final List<Question> mQuestionPool = ModalRoute.of(context).settings.arguments;
 
     void onGeneratePressed(){
-      
+
     }
 
     return Scaffold(

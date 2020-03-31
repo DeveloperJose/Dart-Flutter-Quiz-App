@@ -3,8 +3,8 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'networking.dart';
-import 'question.dart';
+import 'model/networking.dart';
+import 'model/question.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
