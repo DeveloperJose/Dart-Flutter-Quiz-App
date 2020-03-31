@@ -1,7 +1,9 @@
 // Author: Jose G. Perez
 import 'package:flutter/material.dart';
+import 'package:quizapp/model/question.dart';
 
 import 'model/quiz.dart';
+import 'widgets.dart';
 
 class NavigateQuizPage extends StatefulWidget {
   NavigateQuizPage({Key key}) : super(key: key);
@@ -12,6 +14,16 @@ class NavigateQuizPage extends StatefulWidget {
 
 class _NavigateQuizPageState extends State<NavigateQuizPage> {
   int currentQuestionIDX = 0;
+  GlobalKey<QuestionState> _questionKey = GlobalKey();
+
+  bool validateAndUpdate(Quiz mQuiz, int newIndex) {
+    bool isValid = _questionKey.currentState.validate();
+    if (isValid) {
+      _questionKey.currentState.save();
+      setState(() => currentQuestionIDX = newIndex);
+    }
+    return isValid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +34,36 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
         title: Text('Navigate Quiz Page'),
       ),
       body: Container(
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(10.0),
           child: Column(
             children: [
-              Text('Question Stem: ${mQuiz.questions[currentQuestionIDX].stem}'),
+              QuestionWidget(key: _questionKey, mQuestion: mQuiz.questions[currentQuestionIDX]),
               buildNavigationWidget(mQuiz),
             ],
           )),
     );
   }
 
-  Widget buildNavigationWidget(Quiz quiz) {
+  Widget buildNavigationWidget(Quiz mQuiz) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        buildPreviousButton(),
-        buildNextButton(quiz)],
+      children: [buildPreviousButton(mQuiz), buildNextButton(mQuiz)],
     );
   }
 
-  Widget buildPreviousButton() {
+  Widget buildPreviousButton(Quiz mQuiz) {
     bool isEnabled = (currentQuestionIDX != 0);
-    void onPress() => setState(() => currentQuestionIDX--);
+    void onPress() => validateAndUpdate(mQuiz, currentQuestionIDX - 1);
     return RaisedButton(
       child: Text('Previous Question'),
       onPressed: isEnabled ? onPress : null,
     );
   }
 
-  Widget buildNextButton(Quiz quiz) {
-    bool isEnabled = (currentQuestionIDX <= quiz.questions.length);
-    void onPress() => setState(() => currentQuestionIDX++);
+  Widget buildNextButton(Quiz mQuiz) {
+    bool isEnabled = (currentQuestionIDX < mQuiz.questions.length);
+    void onPress() => validateAndUpdate(mQuiz, currentQuestionIDX + 1);
     return RaisedButton(
       child: Text('Next Question'),
       onPressed: isEnabled ? onPress : null,

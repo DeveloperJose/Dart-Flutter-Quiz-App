@@ -12,10 +12,13 @@ abstract class Question {
   var stem;
 
   // The possible answer or list of possible answers
-  var answer;
+  var correctAnswer;
+
+  // The attempted answer used when grading
+  String attemptedAnswer = '';
 
   /// Creates a new question with the given stem and answer
-  Question(this.stem, this.answer);
+  Question(this.stem, this.correctAnswer);
 
   /// String representation of question stem and answers for output display
   String display();
@@ -44,7 +47,7 @@ class MultipleChoice extends Question {
 
   @override
   bool evaluateInput(String userInput) {
-    return userInput.toLowerCase() == answer.toString().toLowerCase();
+    return userInput.toLowerCase() == correctAnswer.toString().toLowerCase();
   }
 }
 
@@ -59,7 +62,7 @@ class FillInTheBlank extends Question {
 
   @override
   bool evaluateInput(String userInput) {
-    for (var ans in answer) {
+    for (var ans in correctAnswer) {
       // Allow for small typos using edit distance
       var editDistance = levenshtein.distance(userInput, ans.toString());
       if (editDistance <= allowedTypos) {
