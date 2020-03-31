@@ -14,6 +14,9 @@ abstract class Question {
   // The possible answer or list of possible answers
   var correctAnswer;
 
+  // Is this question being reviewed?
+  bool isUnderReview = false;
+
   // The attempted answer used when grading
   String attemptedAnswer = '';
 
@@ -25,6 +28,7 @@ abstract class Question {
 
   /// Evaluates whether the user input is the correct answer for this question
   bool isCorrectAnswer();
+
 }
 
 /// A question where multiple options are given

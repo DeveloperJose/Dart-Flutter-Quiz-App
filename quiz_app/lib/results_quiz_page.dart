@@ -60,7 +60,10 @@ class ResultsQuizPage extends StatelessWidget {
     else
       return RaisedButton(
         child: Text('Review Incorrect Answers'),
-        onPressed: () => Navigator.pushNamed(context, 'review_quiz'),
+        onPressed: () {
+          mQuiz.questions.removeWhere((question) => question.isCorrectAnswer());
+          Navigator.pushNamed(context, 'navigate_quiz', arguments: mQuiz);
+        },
       );
   }
 }

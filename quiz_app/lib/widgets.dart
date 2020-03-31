@@ -44,7 +44,10 @@ abstract class QuestionState extends State<StatefulWidget> {
   }
 
   Widget buildStemWidget() {
-    return Text(mQuestion.stem ?? '', style: TextStyle(fontSize: 25,));
+    return Text(mQuestion.stem ?? '',
+        style: TextStyle(
+          fontSize: 20,
+        ));
   }
 
   Widget buildAnswerWidget();
@@ -62,7 +65,9 @@ class FillInTheBlankState extends QuestionState {
   Widget buildAnswerWidget() {
     mController.text = mQuestion.attemptedAnswer.toString();
 
-    return TextFormField(
+    var textColor = mQuestion.isUnderReview ? Colors.red : Colors.black;
+    var textField = TextFormField(
+      enabled: !mQuestion.isUnderReview,
       controller: mController,
       onSaved: (newValue) => mQuestion.attemptedAnswer = newValue,
       validator: (newValue) {
@@ -72,6 +77,18 @@ class FillInTheBlankState extends QuestionState {
       keyboardType: TextInputType.text,
       decoration: InputDecoration(labelText: 'Answer', icon: Icon(Icons.question_answer)),
     );
+
+    if (mQuestion.isUnderReview) {
+      return Column(children: [
+        textField,
+        Text(
+          'Right Answer: ${mQuestion.correctAnswer}',
+          style: TextStyle(color: Colors.green),
+        )
+      ]);
+    } else {
+      return textField;
+    }
   }
 }
 
@@ -89,6 +106,7 @@ class MultipleChoiceState extends QuestionState {
   List<Widget> buildOptionsWidget(MultipleChoice mQuestion) {
     List<Widget> result = [];
 
+    mCurrentOption = mQuestion.attemptedAnswer;
     mQuestion.options.forEach((option) {
       result.add(buildRadioWidget(mQuestion, option));
     });
@@ -98,16 +116,31 @@ class MultipleChoiceState extends QuestionState {
   }
 
   RadioListTile<String> buildRadioWidget(MultipleChoice mQuestion, option) {
-    mCurrentOption = mQuestion.attemptedAnswer;
+    // When reviewing, disable changing and highlight correct and incorrect answers
+    var textColor = Colors.black;
+    var bgColor = Colors.transparent;
+    if (mQuestion.isUnderReview) {
+      print('[Review] Selected: $option, Correct: ${mQuestion.options[mQuestion.correctAnswer]}');
+      if (option == mCurrentOption) {
+        bgColor = Colors.red;
+        textColor = Colors.white;
+      }
+      else if (mQuestion.options[mQuestion.correctAnswer].toString() == option) {
+        bgColor = Colors.green;
+        textColor = Colors.white;
+      };
+    }
+
+    void onChanged(newValue) {
+      mQuestion.attemptedAnswer = newValue;
+      setState(() => mCurrentOption = newValue);
+    }
+
     return RadioListTile<String>(
-      value: option,
-      title: Text(option, style: TextStyle(fontSize: 20)),
-      groupValue: mCurrentOption,
-      onChanged: (newValue) {
-        mQuestion.attemptedAnswer = newValue;
-        setState(() => mCurrentOption = newValue);
-      },
-    );
+        value: option,
+        title: Text(option, style: TextStyle(fontSize: 20, color: textColor, backgroundColor: bgColor)),
+        groupValue: mCurrentOption,
+        onChanged: mQuestion.isUnderReview ? null : onChanged);
   }
 
   @override

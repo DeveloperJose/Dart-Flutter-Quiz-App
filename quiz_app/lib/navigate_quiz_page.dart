@@ -32,7 +32,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Navigate Quiz Page'),
+        title: Text(mQuiz.isReviewing ? 'Reviewing Quiz Page' : 'Navigate Quiz Page'),
       ),
       body: Container(
           padding: EdgeInsets.all(10.0),
@@ -68,20 +68,35 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
   }
 
   Widget buildNextButton(Quiz mQuiz) {
-    bool isLast = (currentQuestionIDX == mQuiz.questions.length - 1) && (_questionKey.currentState.validate());
-    void onPress() {
-      if (isLast) {
-        // Go to grading screen
-        Navigator.pushNamed(context, 'results_quiz', arguments: mQuiz);
-      } else {
-        validateAndUpdate(mQuiz, currentQuestionIDX + 1);
-      }
-    }
+    bool isLast = (currentQuestionIDX == mQuiz.questions.length - 1);
 
-    return RaisedButton(
-      child: Text(isLast ? 'Submit and Grade' : 'Next Question'),
-      onPressed: onPress,
-    );
+    if (mQuiz.isReviewing) {
+      return RaisedButton(
+        child: Text(isLast ? 'Return To Quiz Creation Page' : 'Next Question'),
+        onPressed: () {
+          if (isLast)
+            Navigator.popUntil(context, ModalRoute.withName('create_quiz'));
+          else
+            validateAndUpdate(mQuiz, currentQuestionIDX + 1);
+        },
+      );
+    } else {
+      return RaisedButton(
+        child: Text(isLast ? 'Submit and Grade' : 'Next Question'),
+        onPressed: () {
+          if (isLast) {
+            // Go to grading screen
+            bool isEnabled = _questionKey.currentState?.validate();
+            if (isEnabled) {
+              mQuiz.isReviewing = true;
+              Navigator.pushNamed(context, 'results_quiz', arguments: mQuiz);
+            }
+          } else {
+            validateAndUpdate(mQuiz, currentQuestionIDX + 1);
+          }
+        },
+      );
+    }
   }
 
   Widget buildProgress(Quiz mQuiz) {

@@ -9,6 +9,16 @@ class Quiz {
   /// The questions of the quiz
   List<Question> questions;
 
+  bool _isReviewing = false;
+
+  get isReviewing => _isReviewing;
+
+  // Whether or not this quiz is currently being reviewed
+  set isReviewing(newValue) {
+    _isReviewing = newValue;
+    questions.forEach((question) => question.isUnderReview = newValue);
+  }
+
   Quiz(this.name, this.questions);
 
   QuizGrade grade() {
@@ -20,6 +30,10 @@ class Quiz {
       if (question.isCorrectAnswer()) totalCorrect++;
     }
     return QuizGrade(totalCorrect, totalQuestions);
+  }
+
+  void resetAnswers(){
+    questions.forEach((question) => question.attemptedAnswer = '');
   }
 
   /// Creates a quiz by parsing a JSON

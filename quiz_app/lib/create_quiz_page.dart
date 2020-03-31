@@ -12,7 +12,7 @@ class CreateQuizPage extends StatefulWidget {
 }
 
 class _CreateQuizPageState extends State<CreateQuizPage> {
-  double _numberOfQuestions = 2;
+  double _numberOfQuestions = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,9 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     void onGeneratePressed() {
       mQuestionPool.shuffle();
       List<Question> quizQuestions = mQuestionPool.getRange(0, _numberOfQuestions.toInt()).toList();
-      Navigator.pushNamed(context, 'navigate_quiz', arguments: Quiz('main_quiz', quizQuestions));
+      Quiz quiz = Quiz('main_quiz', quizQuestions);
+      quiz.resetAnswers();
+      Navigator.pushNamed(context, 'navigate_quiz', arguments: quiz);
     }
 
     return Scaffold(
@@ -75,7 +77,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   Slider buildSliderWidget(List<Question> mQuestionPool) {
     return Slider(
         value: _numberOfQuestions,
-        min: 2,
+        min: 1,
         max: mQuestionPool.length.toDouble(),
         divisions: mQuestionPool.length,
         onChanged: (newValue) => setState(() => _numberOfQuestions = newValue));
