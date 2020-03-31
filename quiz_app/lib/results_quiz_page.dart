@@ -47,8 +47,8 @@ class ResultsQuizPage extends StatelessWidget {
 
   Widget buildReturnButton(BuildContext context) {
     return RaisedButton(
-      child: Text('Return To Quiz Creation Page'),
-      onPressed: () => Navigator.popUntil(context, ModalRoute.withName('create_quiz')),
+      child: Text('Return To Login Page'),
+      onPressed: () => Navigator.popUntil(context, ModalRoute.withName('login')),
     );
   }
 

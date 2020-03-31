@@ -72,10 +72,10 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
 
     if (mQuiz.isReviewing) {
       return RaisedButton(
-        child: Text(isLast ? 'Return To Quiz Creation Page' : 'Next Question'),
+        child: Text(isLast ? 'Return To Login Page' : 'Next Question'),
         onPressed: () {
           if (isLast)
-            Navigator.popUntil(context, ModalRoute.withName('create_quiz'));
+            Navigator.popUntil(context, ModalRoute.withName('login'));
           else
             validateAndUpdate(mQuiz, currentQuestionIDX + 1);
         },
