@@ -30,6 +30,7 @@ Future<Quiz> fetchQuiz(String username, String password, var quizNumber) async {
   }
 }
 
+/// Gets all the available questions from the class website
 Future<List<Question>> fetchWholeQuestionPool(String username, String password) async {
   List<Question> result = [];
 
@@ -46,5 +47,3 @@ Future<List<Question>> fetchWholeQuestionPool(String username, String password) 
   }
   return result;
 }
-
-//Future<>

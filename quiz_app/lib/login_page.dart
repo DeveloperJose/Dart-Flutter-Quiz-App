@@ -41,10 +41,9 @@ class _LoginPageState extends State<LoginPage> {
       } catch (ex) {
         _scaffoldKey.currentState.hideCurrentSnackBar();
         _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(ex.toString()), duration: Duration(seconds: 2)));
-      } finally {
-        progressDialog.dismiss();
       }
 
+      progressDialog.dismiss();
       // Move to create quiz screen if we got questions
       if (allQuestions != null) {
         print('Questions loaded:  ${allQuestions.length}');

@@ -9,11 +9,11 @@ class Quiz {
   /// The questions of the quiz
   List<Question> questions;
 
+  // Whether or not this quiz is currently being reviewed
   bool _isReviewing = false;
 
   get isReviewing => _isReviewing;
 
-  // Whether or not this quiz is currently being reviewed
   set isReviewing(newValue) {
     _isReviewing = newValue;
     questions.forEach((question) => question.isUnderReview = newValue);
@@ -21,6 +21,7 @@ class Quiz {
 
   Quiz(this.name, this.questions);
 
+  ///
   QuizGrade grade() {
     var totalQuestions = questions.length;
     var totalCorrect = 0;
