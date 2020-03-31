@@ -12,7 +12,7 @@ class CreateQuizPage extends StatefulWidget {
 }
 
 class _CreateQuizPageState extends State<CreateQuizPage> {
-  double _numberOfQuestions = 1;
+  double _numberOfQuestions = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   Slider buildSliderWidget(List<Question> mQuestionPool) {
     return Slider(
         value: _numberOfQuestions,
-        min: 1,
+        min: 2,
         max: mQuestionPool.length.toDouble(),
         divisions: mQuestionPool.length,
         onChanged: (newValue) => setState(() => _numberOfQuestions = newValue));

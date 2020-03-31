@@ -11,13 +11,13 @@ class Quiz {
 
   Quiz(this.name, this.questions);
 
-  QuizGrade grade(answers) {
+  QuizGrade grade() {
     var totalQuestions = questions.length;
     var totalCorrect = 0;
     for (var i = 0; i < totalQuestions; i++) {
-      var userAnswer = answers[i];
       var question = questions[i];
-      if (question.evaluateInput(userAnswer.toString())) totalCorrect++;
+      print('Grading: Given ${question.attemptedAnswer}, Correct: ${question.correctAnswer}');
+      if (question.isCorrectAnswer()) totalCorrect++;
     }
     return QuizGrade(totalCorrect, totalQuestions);
   }

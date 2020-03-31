@@ -24,7 +24,7 @@ abstract class Question {
   String display();
 
   /// Evaluates whether the user input is the correct answer for this question
-  bool evaluateInput(String userInput);
+  bool isCorrectAnswer();
 }
 
 /// A question where multiple options are given
@@ -46,8 +46,8 @@ class MultipleChoice extends Question {
   }
 
   @override
-  bool evaluateInput(String userInput) {
-    return userInput.toLowerCase() == correctAnswer.toString().toLowerCase();
+  bool isCorrectAnswer() {
+    return attemptedAnswer.toLowerCase() == options[correctAnswer-1].toString().toLowerCase();
   }
 }
 
@@ -61,10 +61,10 @@ class FillInTheBlank extends Question {
   }
 
   @override
-  bool evaluateInput(String userInput) {
+  bool isCorrectAnswer() {
     for (var ans in correctAnswer) {
       // Allow for small typos using edit distance
-      var editDistance = levenshtein.distance(userInput, ans.toString());
+      var editDistance = levenshtein.distance(attemptedAnswer, ans.toString());
       if (editDistance <= allowedTypos) {
         return true;
       }

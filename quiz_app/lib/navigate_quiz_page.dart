@@ -68,10 +68,11 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
   }
 
   Widget buildNextButton(Quiz mQuiz) {
-    bool isLast = (currentQuestionIDX < mQuiz.questions.length - 1);
+    bool isLast = (currentQuestionIDX == mQuiz.questions.length - 1) && (_questionKey.currentState.validate());
     void onPress() {
       if (isLast) {
         // Go to grading screen
+        Navigator.pushNamed(context, 'results_quiz', arguments: mQuiz);
       } else {
         validateAndUpdate(mQuiz, currentQuestionIDX + 1);
       }
