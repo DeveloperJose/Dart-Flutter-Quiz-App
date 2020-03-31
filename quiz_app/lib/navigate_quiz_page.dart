@@ -1,10 +1,11 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
 import 'package:flutter/material.dart';
 import 'package:quizapp/model/question.dart';
 
 import 'model/quiz.dart';
 import 'widgets.dart';
 
+/// This page is in charge of the quiz taking navigation and reviewing navigation
 class NavigateQuizPage extends StatefulWidget {
   NavigateQuizPage({Key key}) : super(key: key);
 
@@ -13,9 +14,14 @@ class NavigateQuizPage extends StatefulWidget {
 }
 
 class _NavigateQuizPageState extends State<NavigateQuizPage> {
+  /// Current question index
   int currentQuestionIDX = 0;
+
+  /// Key used to update the question state
   GlobalKey<QuestionState> _questionKey = GlobalKey();
 
+  /// Checks if the current question is valid and if so, saves it
+  /// Then it updates the question using the provided new index
   bool validateAndUpdate(Quiz mQuiz, int newIndex) {
     bool isValid = _questionKey.currentState.validate();
     if (isValid) {
@@ -42,6 +48,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
     );
   }
 
+  /// Builds the question widget depending on the current type of question
   Widget buildQuestionWidget(Quiz mQuiz) {
     Question currentQuestion = mQuiz.questions[currentQuestionIDX];
     if (currentQuestion is MultipleChoice)
@@ -50,6 +57,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
       return FillInTheBlankWidget(key: _questionKey, mQuestion: currentQuestion);
   }
 
+  /// Builds the navigation components, in this case, the navigation buttons
   Widget buildNavigationWidget(Quiz mQuiz) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -58,6 +66,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
     );
   }
 
+  /// Builds the previous question button
   Widget buildPreviousButton(Quiz mQuiz) {
     bool isEnabled = (currentQuestionIDX > 0);
     void onPress() => validateAndUpdate(mQuiz, currentQuestionIDX - 1);
@@ -67,6 +76,8 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
     );
   }
 
+  /// Builds the next question button
+  /// When we are on the last question, builds the submit button
   Widget buildNextButton(Quiz mQuiz) {
     bool isLast = (currentQuestionIDX == mQuiz.questions.length - 1);
 
@@ -99,6 +110,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
     }
   }
 
+  /// Builds the progress trackers at the bottom
   Widget buildProgress(Quiz mQuiz) {
     double value = (currentQuestionIDX + 1) / mQuiz.questions.length;
     return Column(children: [

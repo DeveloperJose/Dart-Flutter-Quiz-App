@@ -1,4 +1,5 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
+/// These are the question-specific widgets and their implementations
 import 'package:flutter/material.dart';
 import 'package:quizapp/model/question.dart';
 
@@ -20,11 +21,18 @@ class FillInTheBlankWidget extends StatefulWidget {
   QuestionState createState() => FillInTheBlankState(mQuestion);
 }
 
+/// Contains the shared view logic between both types of questions
 abstract class QuestionState extends State<StatefulWidget> {
+  /// The question that is being represented
   Question mQuestion;
+
+  /// The form which keeps track of validation and saving (if necessary)
   GlobalKey<FormState> _formKey = GlobalKey();
 
   QuestionState(this.mQuestion);
+
+  /// Abstract method building the answer part of the question. Every widget has to override this
+  Widget buildAnswerWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +47,12 @@ abstract class QuestionState extends State<StatefulWidget> {
     );
   }
 
+  /// Updates the question and subsequently its state
   void updateQuestion(Question newQuestion) {
     setState(() => mQuestion = newQuestion);
   }
 
+  /// Builds the stem part of the question, including the figure if included and valid
   Widget buildStemWidget() {
     var stemText = Text(mQuestion.stem ?? '', style: TextStyle(fontSize: 20));
     if (mQuestion.figureURL == null)
@@ -53,14 +63,15 @@ abstract class QuestionState extends State<StatefulWidget> {
       );
   }
 
-  Widget buildAnswerWidget();
-
+  /// Validation check for this state
   bool validate() => _formKey.currentState.validate();
 
+  /// Saving method for this state
   void save() => _formKey.currentState.save();
 }
 
 class FillInTheBlankState extends QuestionState {
+  /// Controller used to persist the user provided responses when navigating
   TextEditingController mController = TextEditingController();
 
   FillInTheBlankState(Question question) : super(question);
@@ -68,7 +79,6 @@ class FillInTheBlankState extends QuestionState {
   Widget buildAnswerWidget() {
     mController.text = mQuestion.attemptedAnswer.toString();
 
-    var textColor = mQuestion.isUnderReview ? Colors.red : Colors.black;
     var textField = TextFormField(
       enabled: !mQuestion.isUnderReview,
       controller: mController,
@@ -96,7 +106,10 @@ class FillInTheBlankState extends QuestionState {
 }
 
 class MultipleChoiceState extends QuestionState {
+  /// Current selected multiple choice options
   String mCurrentOption = '';
+
+  /// Error message to display (if any). Used for validation checks.
   String mErrorMessage = '';
 
   MultipleChoiceState(Question question) : super(question);
@@ -106,6 +119,7 @@ class MultipleChoiceState extends QuestionState {
     return Column(children: buildOptionsWidget(mQuestion as MultipleChoice));
   }
 
+  /// Builds the list of widgets representing the multiple choice options
   List<Widget> buildOptionsWidget(MultipleChoice mQuestion) {
     List<Widget> result = [];
 
@@ -118,6 +132,7 @@ class MultipleChoiceState extends QuestionState {
     return result;
   }
 
+  /// Builds a single widget representing one multiple choice option
   RadioListTile<String> buildRadioWidget(MultipleChoice mQuestion, option) {
     // When reviewing, disable changing and highlight correct and incorrect answers
     var textColor = Colors.black;
@@ -131,7 +146,6 @@ class MultipleChoiceState extends QuestionState {
         bgColor = Colors.green;
         textColor = Colors.white;
       }
-      ;
     }
 
     void onChanged(newValue) {

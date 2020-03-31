@@ -1,9 +1,10 @@
-// Author: Jose G. Perez
-import 'package:http/http.dart' as http;
+/// Author: Jose G. Perez
 import 'dart:convert';
 
-import 'quiz.dart';
+import 'package:http/http.dart' as http;
+
 import 'question.dart';
+import 'quiz.dart';
 
 var baseQuizURL = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/post.php';
 var baseFigureURL = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/figure.php?name=';

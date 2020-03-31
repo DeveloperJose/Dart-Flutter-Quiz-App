@@ -1,8 +1,9 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
 import 'package:flutter/material.dart';
 
 import 'model/quiz.dart';
 
+/// Page displaying your quiz results
 class ResultsQuizPage extends StatelessWidget {
   ResultsQuizPage({Key key}) : super(key: key);
 
@@ -27,6 +28,7 @@ class ResultsQuizPage extends StatelessWidget {
     );
   }
 
+  /// Builds the widget displaying your quiz statistics
   Widget buildGradeDisplay(Quiz mQuiz) {
     QuizGrade grade = mQuiz.grade();
     var gradeColor = (grade.numericalGrade < 0.7) ? Colors.red : Colors.green;
@@ -45,6 +47,7 @@ class ResultsQuizPage extends StatelessWidget {
     ]);
   }
 
+  /// Builds the return button
   Widget buildReturnButton(BuildContext context) {
     return RaisedButton(
       child: Text('Return To Login Page'),
@@ -52,6 +55,7 @@ class ResultsQuizPage extends StatelessWidget {
     );
   }
 
+  /// Builds the review button
   Widget buildReviewButton(BuildContext context, Quiz mQuiz) {
     QuizGrade grade = mQuiz.grade();
     // Cannot review if you got a perfect score

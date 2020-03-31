@@ -1,4 +1,4 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
 import 'package:flutter/material.dart';
 
 import 'model/question.dart';
@@ -18,11 +18,16 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   Widget build(BuildContext context) {
     final List<Question> mQuestionPool = ModalRoute.of(context).settings.arguments;
 
+    /// Event handler for when the Generate quiz button is pressed
     void onGeneratePressed() {
+      // Randomize questions
       mQuestionPool.shuffle();
+      // Get only the requested number
       List<Question> quizQuestions = mQuestionPool.getRange(0, _numberOfQuestions.toInt()).toList();
+      // Put them together into a quiz
       Quiz quiz = Quiz('main_quiz', quizQuestions);
       quiz.resetAnswers();
+      // Send them to the quiz navigator
       Navigator.pushNamed(context, 'navigate_quiz', arguments: quiz);
     }
 
@@ -47,6 +52,8 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     );
   }
 
+  /// Builds the widgets which allow us to select the number of quiz questions
+  /// A slider, two buttons (one for +1, one for -1), and a text saying the current number
   Widget buildSelectorWidget(List<Question> mQuestionPool) {
     return Column(children: [
       Row(children: [
@@ -69,11 +76,13 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     ]);
   }
 
+  /// Builds the text widget which displays the current selected number of questions
   Text buildQuestionTextWidget() {
     return Text(_numberOfQuestions.round().toString(),
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.deepPurple));
   }
 
+  /// Builds the slider widgets which can be used to change the number of questions
   Slider buildSliderWidget(List<Question> mQuestionPool) {
     return Slider(
         value: _numberOfQuestions,
@@ -83,6 +92,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
         onChanged: (newValue) => setState(() => _numberOfQuestions = newValue));
   }
 
+  /// Builds the -1 button widget which can change the number of questions
   RaisedButton buildDownWidget() {
     return RaisedButton(
       child: Icon(Icons.keyboard_arrow_down, color: Colors.white),
@@ -91,6 +101,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     );
   }
 
+  /// Builds the +1 button widget which can change the number of questions
   RaisedButton buildUpWidget() {
     return RaisedButton(
       child: Icon(Icons.keyboard_arrow_up, color: Colors.white),

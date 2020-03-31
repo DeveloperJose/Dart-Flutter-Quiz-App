@@ -1,4 +1,4 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
 import 'package:edit_distance/edit_distance.dart';
 
 /// Edit Distance algorithm used to evaluate if an answer is correct for fill in the blank
@@ -31,7 +31,6 @@ abstract class Question {
 
   /// Evaluates whether the user input is the correct answer for this question
   bool isCorrectAnswer();
-
 }
 
 /// A question where multiple options are given
@@ -54,7 +53,7 @@ class MultipleChoice extends Question {
 
   @override
   bool isCorrectAnswer() {
-    return attemptedAnswer.toLowerCase() == options[correctAnswer-1].toString().toLowerCase();
+    return attemptedAnswer.toLowerCase() == options[correctAnswer - 1].toString().toLowerCase();
   }
 }
 

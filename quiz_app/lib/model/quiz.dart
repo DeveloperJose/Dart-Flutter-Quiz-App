@@ -1,4 +1,4 @@
-// Author: Jose G. Perez
+/// Author: Jose G. Perez
 import 'question.dart';
 
 /// Represents a quiz, which is a collection of fill-in-the-blank and multiple-choice questions
@@ -21,19 +21,20 @@ class Quiz {
 
   Quiz(this.name, this.questions);
 
-  ///
+  /// Grades this quiz using the provided answers
   QuizGrade grade() {
     var totalQuestions = questions.length;
     var totalCorrect = 0;
     for (var i = 0; i < totalQuestions; i++) {
       var question = questions[i];
-      print('Grading: Given ${question.attemptedAnswer}, Correct: ${question.correctAnswer}');
+      print('[Grading] Given ${question.attemptedAnswer}, Correct: ${question.correctAnswer}');
       if (question.isCorrectAnswer()) totalCorrect++;
     }
     return QuizGrade(totalCorrect, totalQuestions);
   }
 
-  void resetAnswers(){
+  /// Clears all the previously written answers of this quiz
+  void resetAnswers() {
     questions.forEach((question) => question.attemptedAnswer = '');
   }
 
@@ -49,6 +50,7 @@ class Quiz {
       var answer = question['answer'];
       var figureURL = question['figure'];
       print('Figure: $figureURL');
+
       // MultipleChoice
       if (type == 1) {
         var options = question['option'];

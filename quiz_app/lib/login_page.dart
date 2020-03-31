@@ -1,7 +1,7 @@
-// Author: Jose G. Perez
-import 'package:progress_dialog/progress_dialog.dart';
+/// Author: Jose G. Perez
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import 'model/networking.dart';
 import 'model/question.dart';
@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
+  /// Event handler for when the sign-in button is pressed
+  /// Displays a progress dialog when busy performing network operations
   void onSignInPressed() async {
     // Check if form is valid first
     if (_formKey.currentState.validate()) {
@@ -68,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds the login form
   Widget buildFormWidget(BuildContext context) {
     return Form(
       key: _formKey,
@@ -83,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds the text which describes the class at the top
   Widget buildDescriptionWidget() {
     return Center(
       child: Text(
@@ -96,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds the username field
   Widget buildUsernameWidget() {
     return TextFormField(
       onSaved: (value) => mUsername = value,
@@ -112,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds the password field
   Widget buildPasswordWidget() {
     return TextFormField(
       onSaved: (value) => mPassword = value,
@@ -129,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds the submit button field
   Widget buildSubmitWidget() {
     return RaisedButton(
       child: Text('Sign In'),
@@ -136,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Builds a little username hint at the bottom of the screen
   Widget buildHintTextWidget() {
     return Text('*User name of your primary email address provided to by UTEP, typically your @miners email address',
         style: TextStyle(fontSize: 10));
