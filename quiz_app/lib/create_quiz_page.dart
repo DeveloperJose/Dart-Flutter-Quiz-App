@@ -5,19 +5,23 @@ import 'question.dart';
 import 'quiz.dart';
 
 class CreateQuizPage extends StatefulWidget {
-  List<Question> mQuestionPool;
-
-  CreateQuizPage({Key key, List<Question> questionPool}) : super(key: key) {
-    mQuestionPool = questionPool;
-  }
+  CreateQuizPage({Key key}) : super(key: key);
 
   @override
   _CreateQuizPageState createState() => _CreateQuizPageState();
 }
 
 class _CreateQuizPageState extends State<CreateQuizPage> {
+  double _numberOfQuestions = 1;
+
   @override
   Widget build(BuildContext context) {
+    final List<Question> mQuestionPool = ModalRoute.of(context).settings.arguments;
+
+    void onGeneratePressed(){
+      
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Quiz Page'),
@@ -25,11 +29,30 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
       body: Container(
         padding: EdgeInsets.all(30.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('')
+            Text('Select the number of questions you would like your quiz to have: '),
+            buildSelectorWidget(mQuestionPool),
+            RaisedButton(
+              child: Text('Generate quiz!'),
+              onPressed: onGeneratePressed,
+            )
           ],
         ),
       ),
     );
+  }
+
+  Widget buildSelectorWidget(List<Question> mQuestionPool) {
+    return Row(children: [
+      Expanded(
+          child: Slider(
+              value: _numberOfQuestions,
+              min: 1,
+              max: mQuestionPool.length.toDouble(),
+              divisions: mQuestionPool.length,
+              onChanged: (newValue) => setState(() => _numberOfQuestions = newValue))),
+      Text(_numberOfQuestions.round().toString())
+    ]);
   }
 }
