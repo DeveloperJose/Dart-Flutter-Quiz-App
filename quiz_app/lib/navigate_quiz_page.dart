@@ -21,6 +21,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
     if (isValid) {
       _questionKey.currentState.save();
       setState(() => currentQuestionIDX = newIndex);
+      _questionKey.currentState.updateQuestion(mQuiz.questions[newIndex]);
     }
     return isValid;
   }
@@ -36,12 +37,17 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
       body: Container(
           padding: EdgeInsets.all(10.0),
           child: Column(
-            children: [
-              QuestionWidget(key: _questionKey, mQuestion: mQuiz.questions[currentQuestionIDX]),
-              buildNavigationWidget(mQuiz),
-            ],
+            children: [buildQuestionWidget(mQuiz), buildNavigationWidget(mQuiz), buildProgress(mQuiz)],
           )),
     );
+  }
+
+  Widget buildQuestionWidget(Quiz mQuiz) {
+    Question currentQuestion = mQuiz.questions[currentQuestionIDX];
+    if (currentQuestion is MultipleChoice)
+      return MultipleChoiceWidget(key: _questionKey, mQuestion: currentQuestion);
+    else
+      return FillInTheBlankWidget(key: _questionKey, mQuestion: currentQuestion);
   }
 
   Widget buildNavigationWidget(Quiz mQuiz) {
@@ -53,7 +59,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
   }
 
   Widget buildPreviousButton(Quiz mQuiz) {
-    bool isEnabled = (currentQuestionIDX != 0);
+    bool isEnabled = (currentQuestionIDX > 0);
     void onPress() => validateAndUpdate(mQuiz, currentQuestionIDX - 1);
     return RaisedButton(
       child: Text('Previous Question'),
@@ -62,11 +68,26 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
   }
 
   Widget buildNextButton(Quiz mQuiz) {
-    bool isEnabled = (currentQuestionIDX < mQuiz.questions.length);
-    void onPress() => validateAndUpdate(mQuiz, currentQuestionIDX + 1);
+    bool isLast = (currentQuestionIDX < mQuiz.questions.length - 1);
+    void onPress() {
+      if (isLast) {
+        // Go to grading screen
+      } else {
+        validateAndUpdate(mQuiz, currentQuestionIDX + 1);
+      }
+    }
+
     return RaisedButton(
-      child: Text('Next Question'),
-      onPressed: isEnabled ? onPress : null,
+      child: Text(isLast ? 'Submit and Grade' : 'Next Question'),
+      onPressed: onPress,
     );
+  }
+
+  Widget buildProgress(Quiz mQuiz) {
+    double value = (currentQuestionIDX + 1) / mQuiz.questions.length;
+    return Column(children: [
+      LinearProgressIndicator(value: value),
+      Text('Question ${currentQuestionIDX + 1} out of ${mQuiz.questions.length}'),
+    ]);
   }
 }
