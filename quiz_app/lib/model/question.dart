@@ -14,6 +14,9 @@ abstract class Question {
   // The possible answer or list of possible answers
   var correctAnswer;
 
+  // The URL of the provided figure
+  var figureURL;
+
   // Is this question being reviewed?
   bool isUnderReview = false;
 
@@ -21,7 +24,7 @@ abstract class Question {
   String attemptedAnswer = '';
 
   /// Creates a new question with the given stem and answer
-  Question(this.stem, this.correctAnswer);
+  Question(this.stem, this.correctAnswer, this.figureURL);
 
   /// String representation of question stem and answers for output display
   String display();
@@ -36,7 +39,7 @@ class MultipleChoice extends Question {
   /// The choice options of this question
   List options;
 
-  MultipleChoice(stem, answer, this.options) : super(stem, answer);
+  MultipleChoice(stem, answer, figureURL, this.options) : super(stem, answer, figureURL);
 
   @override
   String display() {
@@ -57,7 +60,7 @@ class MultipleChoice extends Question {
 
 // A question where the user must fill in a blank
 class FillInTheBlank extends Question {
-  FillInTheBlank(stem, answer) : super(stem, answer);
+  FillInTheBlank(stem, answer, figureURL) : super(stem, answer, figureURL);
 
   @override
   String display() {

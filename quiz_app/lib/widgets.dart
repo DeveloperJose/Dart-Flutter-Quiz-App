@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/model/question.dart';
 
-import 'model/quiz.dart';
+import 'model/networking.dart';
 
 class MultipleChoiceWidget extends StatefulWidget {
   final Question mQuestion;
@@ -44,10 +44,13 @@ abstract class QuestionState extends State<StatefulWidget> {
   }
 
   Widget buildStemWidget() {
-    return Text(mQuestion.stem ?? '',
-        style: TextStyle(
-          fontSize: 20,
-        ));
+    var stemText = Text(mQuestion.stem ?? '', style: TextStyle(fontSize: 20));
+    if (mQuestion.figureURL == null)
+      return stemText;
+    else
+      return Column(
+        children: [stemText, Image.network(baseFigureURL + mQuestion.figureURL)],
+      );
   }
 
   Widget buildAnswerWidget();
@@ -124,11 +127,11 @@ class MultipleChoiceState extends QuestionState {
       if (option == mCurrentOption) {
         bgColor = Colors.red;
         textColor = Colors.white;
-      }
-      else if (mQuestion.options[mQuestion.correctAnswer].toString() == option) {
+      } else if (mQuestion.options[mQuestion.correctAnswer].toString() == option) {
         bgColor = Colors.green;
         textColor = Colors.white;
-      };
+      }
+      ;
     }
 
     void onChanged(newValue) {

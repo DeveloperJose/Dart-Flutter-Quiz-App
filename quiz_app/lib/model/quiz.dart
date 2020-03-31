@@ -46,14 +46,16 @@ class Quiz {
       var stem = question['stem'];
       var type = question['type'];
       var answer = question['answer'];
+      var figureURL = question['figure'];
+      print('Figure: $figureURL');
       // MultipleChoice
       if (type == 1) {
         var options = question['option'];
-        parsedQuestions.add(MultipleChoice(stem, answer, options));
+        parsedQuestions.add(MultipleChoice(stem, answer, figureURL, options));
       }
       // FillInBlank
       else {
-        parsedQuestions.add(FillInTheBlank(stem, answer));
+        parsedQuestions.add(FillInTheBlank(stem, answer, figureURL));
       }
     });
 

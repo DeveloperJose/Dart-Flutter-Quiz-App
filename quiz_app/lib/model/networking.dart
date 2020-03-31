@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'quiz.dart';
 import 'question.dart';
 
-var url = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/post.php';
+var baseQuizURL = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/post.php';
+var baseFigureURL = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/figure.php?name=';
 
 /// Gets the requested quiz from the class website
 ///
@@ -13,7 +14,7 @@ var url = 'http://www.cs.utep.edu/cheon/cs4381/homework/quiz/post.php';
 Future<Quiz> fetchQuiz(String username, String password, var quizNumber) async {
   String quizString = 'quiz' + quizNumber.toString().padLeft(2, '0');
   var body = '{"user": "$username", "pin": "$password", "quiz": "$quizString" }';
-  var httpResponse = await http.post(url, body: body);
+  var httpResponse = await http.post(baseQuizURL, body: body);
 
   if (httpResponse.statusCode != 200) {
     throw Exception('HTTP request gave an invalid status code: ' + httpResponse.statusCode.toString());
@@ -43,4 +44,7 @@ Future<List<Question>> fetchWholeQuestionPool(String username, String password) 
       return result;
     }
   }
+  return result;
 }
+
+//Future<>
