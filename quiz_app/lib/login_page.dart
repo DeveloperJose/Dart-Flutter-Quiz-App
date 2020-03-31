@@ -46,8 +46,10 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       // Move to create quiz screen if we got questions
-      print('Questions loaded:  ${allQuestions.length}');
-      if (allQuestions != null) Navigator.pushNamed(context, 'create_quiz', arguments: allQuestions);
+      if (allQuestions != null) {
+        print('Questions loaded:  ${allQuestions.length}');
+        Navigator.pushNamed(context, 'create_quiz', arguments: allQuestions);
+      }
     }
   }
 

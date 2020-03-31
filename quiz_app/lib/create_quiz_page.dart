@@ -19,7 +19,7 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
     final List<Question> mQuestionPool = ModalRoute.of(context).settings.arguments;
 
     void onGeneratePressed(){
-
+      Navigator.pushNamed(context, 'navigate_quiz', arguments: Quiz('main_quiz', mQuestionPool));
     }
 
     return Scaffold(
