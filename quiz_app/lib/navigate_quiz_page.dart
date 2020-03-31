@@ -34,7 +34,11 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
 
   Widget buildNavigationWidget(Quiz quiz) {
     return Row(
-      children: [buildPreviousButton(), buildNextButton(quiz)],
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        buildPreviousButton(),
+        buildNextButton(quiz)],
     );
   }
 
@@ -48,7 +52,7 @@ class _NavigateQuizPageState extends State<NavigateQuizPage> {
   }
 
   Widget buildNextButton(Quiz quiz) {
-    bool isEnabled = (currentQuestionIDX < quiz.questions.length);
+    bool isEnabled = (currentQuestionIDX <= quiz.questions.length);
     void onPress() => setState(() => currentQuestionIDX++);
     return RaisedButton(
       child: Text('Next Question'),

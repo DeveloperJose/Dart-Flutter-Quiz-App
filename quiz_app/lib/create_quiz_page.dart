@@ -18,8 +18,10 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   Widget build(BuildContext context) {
     final List<Question> mQuestionPool = ModalRoute.of(context).settings.arguments;
 
-    void onGeneratePressed(){
-      Navigator.pushNamed(context, 'navigate_quiz', arguments: Quiz('main_quiz', mQuestionPool));
+    void onGeneratePressed() {
+      mQuestionPool.shuffle();
+      List<Question> quizQuestions = mQuestionPool.getRange(0, _numberOfQuestions.toInt()).toList();
+      Navigator.pushNamed(context, 'navigate_quiz', arguments: Quiz('main_quiz', quizQuestions));
     }
 
     return Scaffold(
@@ -44,15 +46,54 @@ class _CreateQuizPageState extends State<CreateQuizPage> {
   }
 
   Widget buildSelectorWidget(List<Question> mQuestionPool) {
-    return Row(children: [
-      Expanded(
-          child: Slider(
-              value: _numberOfQuestions,
-              min: 1,
-              max: mQuestionPool.length.toDouble(),
-              divisions: mQuestionPool.length,
-              onChanged: (newValue) => setState(() => _numberOfQuestions = newValue))),
-      Text(_numberOfQuestions.round().toString())
+    return Column(children: [
+      Row(children: [
+        Expanded(child: buildSliderWidget(mQuestionPool)),
+        buildQuestionTextWidget(),
+      ]),
+      Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildDownWidget(),
+            SizedBox(
+              width: 30,
+              height: 0,
+            ),
+            buildUpWidget()
+          ],
+        ),
+      )
     ]);
+  }
+
+  Text buildQuestionTextWidget() {
+    return Text(_numberOfQuestions.round().toString(),
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.deepPurple));
+  }
+
+  Slider buildSliderWidget(List<Question> mQuestionPool) {
+    return Slider(
+        value: _numberOfQuestions,
+        min: 1,
+        max: mQuestionPool.length.toDouble(),
+        divisions: mQuestionPool.length,
+        onChanged: (newValue) => setState(() => _numberOfQuestions = newValue));
+  }
+
+  RaisedButton buildDownWidget() {
+    return RaisedButton(
+      child: Icon(Icons.keyboard_arrow_down, color: Colors.white),
+      color: Colors.blue,
+      onPressed: () => setState(() => _numberOfQuestions--),
+    );
+  }
+
+  RaisedButton buildUpWidget() {
+    return RaisedButton(
+      child: Icon(Icons.keyboard_arrow_up, color: Colors.white),
+      color: Colors.blue,
+      onPressed: () => setState(() => _numberOfQuestions++),
+    );
   }
 }

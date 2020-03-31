@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget buildDescriptionWidget() {
     return Center(
       child: Text(
-        "CS 4381",
+        "CS 4381/5381",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 48,
